@@ -1,0 +1,19 @@
+package main
+
+import (
+	"fmt"
+)
+
+func HitungSirkuit(n int) int {
+	total := 0
+	for i := 0; i < n; i++ {
+		total += i
+	}
+	return total
+}
+
+func main() {
+	go fmt.Println(HitungSirkuit(100))
+	go fmt.Println(HitungSirkuit(1000))
+	go fmt.Println(HitungSirkuit(10000))
+}
