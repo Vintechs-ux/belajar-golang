@@ -5,6 +5,8 @@ import (
 	"sync"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCreateChannel(t *testing.T) {
@@ -176,4 +178,68 @@ func TestRWMutex(t *testing.T) {
 
 	time.Sleep(5 * time.Second)
 	fmt.Println("Final Balance : ", account.LihatSaldo())
+}
+
+type SmartLogger struct{}
+
+func (l *SmartLogger) GetLog() bool {
+	fmt.Println("Sirkuit Logika aman , menginisialisasikan program selanjutnya...")
+	return true
+}
+
+func TestSmartLogger(t *testing.T) {
+	var logger SmartLogger
+	result := logger.GetLog()
+	assert.Equal(t, true, result, "Logika Logger Error")
+}
+
+type UserBalance struct {
+	sync.Mutex
+	name    string
+	Balance int
+}
+
+func (user *UserBalance) Lock() {
+	user.Mutex.Lock()
+}
+
+func (user *UserBalance) Unlock() {
+	user.Mutex.Unlock()
+}
+
+func (user *UserBalance) Change(amount int) {
+	user.Balance = user.Balance + amount
+}
+
+func Transfer(user1 *UserBalance, user2 *UserBalance, amount int) {
+	user1.Lock()
+	fmt.Println("Lock", user1.name)
+	user1.Change(amount)
+
+	time.Sleep(1 * time.Second)
+
+	user2.Lock()
+	fmt.Println("Lock", user2.name)
+	user2.Change(amount)
+
+	time.Sleep(1 * time.Second)
+
+	user1.Unlock()
+	user2.Unlock()
+}
+
+func TestTransfer(t *testing.T) {
+	budi := UserBalance{name: "Budi", Balance: 100}
+	diki := UserBalance{name: "Diki", Balance: 200}
+
+	fmt.Println("Budi: ", budi)
+	fmt.Println("Diki: ", diki)
+
+	go Transfer(&budi, &diki, 500)
+	go Transfer(&diki, &budi, 600)
+
+	time.Sleep(5 * time.Second)
+
+	fmt.Println("Budi: ", budi)
+	fmt.Println("Diki: ", diki)
 }
