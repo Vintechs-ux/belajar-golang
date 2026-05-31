@@ -230,17 +230,17 @@ func Transfer(user1 *UserBalance, user2 *UserBalance, amount int) {
 
 func TestDeadlockTransfer(t *testing.T) {
 	budi := UserBalance{name: "Budi", Balance: 100}
-	diki := UserBalance{name: "Diki", Balance: 200}
+	zara := UserBalance{name: "Zara", Balance: 200}
 
 	fmt.Println("Budi: ", budi)
-	fmt.Println("Diki: ", diki)
+	fmt.Println("Zara: ", zara)
 
-	go Transfer(&budi, &diki, 500)
-	go Transfer(&diki, &budi, 600)
+	go Transfer(&budi, &zara, 500)
+	go Transfer(&zara, &budi, 600)
 
 	time.Sleep(5 * time.Second)
 
 	fmt.Println("Budi: ", budi)
-	fmt.Println("Diki: ", diki)
+	fmt.Println("Zara: ", zara)
 	fmt.Println("Hai")
 }
