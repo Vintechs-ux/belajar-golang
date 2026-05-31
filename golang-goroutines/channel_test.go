@@ -228,7 +228,7 @@ func Transfer(user1 *UserBalance, user2 *UserBalance, amount int) {
 	user2.Unlock()
 }
 
-func TestTransfer(t *testing.T) {
+func TestDeadlockTransfer(t *testing.T) {
 	budi := UserBalance{name: "Budi", Balance: 100}
 	diki := UserBalance{name: "Diki", Balance: 200}
 
@@ -242,4 +242,5 @@ func TestTransfer(t *testing.T) {
 
 	fmt.Println("Budi: ", budi)
 	fmt.Println("Diki: ", diki)
+	fmt.Println("Hai")
 }
