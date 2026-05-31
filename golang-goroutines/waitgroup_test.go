@@ -98,7 +98,7 @@ func TestRaceWaitGroupLoop(t *testing.T) {
 			}
 			wg.Wait()
 
-			assert.Equal(t, 100, counter, "program seharusnya tidak mengalami race condition")
+			assert.Equal(t, 100, counter, "Program seharusnya tidak mengalami race condition")
 		})
 	}
 }
