@@ -7,8 +7,13 @@ import (
 )
 
 func TestPool(t *testing.T) {
-	var pool sync.Pool
 	var wg sync.WaitGroup
+
+	pool := sync.Pool{
+		New: func() any {
+			return "New"
+		},
+	}
 
 	pool.Put("Diki")
 	pool.Put("Surya")
