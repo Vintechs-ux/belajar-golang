@@ -43,4 +43,6 @@ Memahami Test Driven Programming dalam pengembangan projek untuk mempermudah sca
 
 Gue migrasi dari Node.js, jadi beberapa catatan di sini mungkin ada perbandingan atau konteks dari ekosistem JavaScript. Bukan berarti salah satu lebih baik cuma biar lebih mudah nangkep perbedaan desain filosofinya.
 
+
+
 Environment: Arch Linux / CachyOS · Neovim · Terminal-only workflow.
