@@ -47,3 +47,11 @@ func TestChan3(t *testing.T) {
 		}
 	}
 }
+
+func TestChan4(t *testing.T) {
+	ch := make(chan string)
+	ch2 := make(chan string)
+
+	fmt.Println(ch)
+	fmt.Println(ch2)
+}
