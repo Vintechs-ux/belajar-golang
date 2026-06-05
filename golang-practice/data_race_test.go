@@ -15,9 +15,11 @@ func TestDataRace(t *testing.T) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			mutex.Lock()
-			idr_balance += 1
-			mutex.Unlock()
+			for j := 0; j < 100; j++ {
+				mutex.Lock()
+				idr_balance += 1
+				mutex.Unlock()
+			}
 		}()
 	}
 
