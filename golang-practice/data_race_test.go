@@ -85,3 +85,11 @@ func TestShapeInterface(t *testing.T) {
 	PrintArea(meja_belajar)
 	PrintArea(meja_bundar)
 }
+
+type Payment interface {
+	Pay(amount float64)
+}
+
+type Dana struct {
+	saldo float64
+}

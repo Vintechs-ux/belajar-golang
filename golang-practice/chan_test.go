@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sync"
 	"testing"
 )
 
@@ -54,4 +55,32 @@ func TestChan4(t *testing.T) {
 
 	fmt.Println(ch)
 	fmt.Println(ch2)
+}
+
+func TestCool(t *testing.T) {
+	var wg sync.WaitGroup
+	var mutex sync.Mutex
+	bool := true
+	x := 0
+
+	go func() {
+		for bool {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				mutex.Lock()
+				x += 1
+				mutex.Unlock()
+			}()
+			if x%10 == 0 {
+				fmt.Println("Yes!")
+			}
+		}
+	}()
+	if x == 10000000000000000 {
+		bool = false
+		fmt.Println("nice")
+	}
+
+	wg.Wait()
 }
