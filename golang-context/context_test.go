@@ -3,6 +3,8 @@ package golangcontext
 import (
 	"context"
 	"fmt"
+	"runtime"
+	"sync"
 	"testing"
 )
 
@@ -37,4 +39,44 @@ func TestContextWithValue(t *testing.T) {
 	fmt.Println(contextG.Value("g"))
 	fmt.Println(contextE.Value("b"))
 	fmt.Println(contextA.Value("b"))
+}
+
+func CreateCounter(ctx context.Context) (chan int, *sync.WaitGroup) {
+	destination := make(chan int)
+	wg := &sync.WaitGroup{}
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		defer close(destination)
+		counter := 1
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			default:
+				destination <- counter
+				counter++
+
+			}
+		}
+	}()
+	return destination, wg
+}
+
+func TestCounter(t *testing.T) {
+	fmt.Println("Total goroutines: ", runtime.NumGoroutine())
+	parent := context.Background()
+	ctx, cancel := context.WithCancel(parent)
+
+	destination, wg := CreateCounter(ctx)
+	for n := range destination {
+		fmt.Println("Counter:", n)
+		if n%100 == 0 {
+			break
+		}
+	}
+	cancel()
+	wg.Wait()
+
+	fmt.Println("Total goroutines now: ", runtime.NumGoroutine())
 }
