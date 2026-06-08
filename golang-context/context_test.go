@@ -39,6 +39,7 @@ func TestContextWithValue(t *testing.T) {
 	fmt.Println(contextG.Value("g"))
 	fmt.Println(contextE.Value("b"))
 	fmt.Println(contextA.Value("b"))
+	fmt.Println(contextA.Value("c"))
 }
 
 func CreateCounter(ctx context.Context) (chan int, *sync.WaitGroup) {
