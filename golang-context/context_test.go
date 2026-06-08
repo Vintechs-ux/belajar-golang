@@ -42,8 +42,8 @@ func TestContextWithValue(t *testing.T) {
 }
 
 func CreateCounter(ctx context.Context) (chan int, *sync.WaitGroup) {
-	destination := make(chan int)
 	wg := &sync.WaitGroup{}
+	destination := make(chan int)
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
