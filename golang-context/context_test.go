@@ -1,4 +1,4 @@
-package golang_context
+package golangcontext
 
 import (
 	"context"
@@ -12,4 +12,29 @@ func TestContext(t *testing.T) {
 
 	todo := context.TODO()
 	fmt.Println(todo)
+}
+
+func TestContextWithValue(t *testing.T) {
+	contextA := context.Background()
+
+	contextB := context.WithValue(contextA, "b", "B")
+	contextC := context.WithValue(contextA, "c", "C")
+	contextD := context.WithValue(contextB, "d", "D")
+	contextE := context.WithValue(contextB, "e", "E")
+
+	contextF := context.WithValue(contextC, "f", "F")
+
+	contextG := context.WithValue(contextA, "g", "G")
+
+	slice := []context.Context{contextA, contextB, contextC, contextD, contextE, contextF, contextG}
+
+	for i := 0; i < len(slice); i++ {
+		fmt.Println(slice[i])
+	}
+
+	fmt.Println(contextF.Value("c"))
+
+	fmt.Println(contextG.Value("g"))
+	fmt.Println(contextE.Value("b"))
+	fmt.Println(contextA.Value("b"))
 }
