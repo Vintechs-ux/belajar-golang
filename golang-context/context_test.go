@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"sync"
 	"testing"
+	"time"
 )
 
 func TestContext(t *testing.T) {
@@ -57,7 +58,6 @@ func CreateCounter(ctx context.Context) (chan int, *sync.WaitGroup) {
 			default:
 				destination <- counter
 				counter++
-
 			}
 		}
 	}()
@@ -79,5 +79,44 @@ func TestCounter(t *testing.T) {
 	cancel()
 	wg.Wait()
 
+	fmt.Println("Total goroutines now: ", runtime.NumGoroutine())
+}
+
+func CreateCounter2(ctx context.Context) (chan int, *sync.WaitGroup) {
+	wg := &sync.WaitGroup{}
+	destination := make(chan int)
+	wg.Add(1)
+	go func() {
+		defer close(destination)
+		defer wg.Done()
+		counter := 1
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			default:
+				destination <- counter
+				counter++
+				time.Sleep(1 * time.Second)
+			}
+		}
+	}()
+	return destination, wg
+}
+
+func TestCounterWithTimeout(t *testing.T) {
+	fmt.Println("Total goroutines: ", runtime.NumGoroutine())
+	parent := context.Background()
+	ctx, cancel := context.WithTimeout(parent, 5*time.Second)
+
+	destination, wg := CreateCounter2(ctx)
+	for i := range destination {
+		fmt.Println("Counter: ", i)
+		if i%100 == 0 {
+			break
+		}
+	}
+	cancel()
+	wg.Wait()
 	fmt.Println("Total goroutines now: ", runtime.NumGoroutine())
 }
