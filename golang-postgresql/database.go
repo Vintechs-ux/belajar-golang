@@ -2,13 +2,12 @@ package main
 
 import (
 	"database/sql"
-	"testing"
 	"time"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
-func TestOpenConnection(t *testing.T) {
+func GetConnection() *sql.DB {
 	dsn := "postgres://postgres:rahasia@localhost:5432/belajar_golang?sslmode=disable"
 
 	db, err := sql.Open("pgx", dsn)
