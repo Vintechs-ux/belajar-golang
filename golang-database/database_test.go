@@ -51,7 +51,7 @@ func TestExecPostgres(t *testing.T) {
 
 	script := "INSERT INTO customer(name) VALUES($1)"
 
-	_, err := db.ExecContext(ctx, script, "budi")
+	_, err := db.ExecContext(ctx, script, "laura")
 	if err != nil {
 		panic(err)
 	}
@@ -83,5 +83,39 @@ func TestQueryPostgres(t *testing.T) {
 			panic(err)
 		}
 		fmt.Printf("ID: %d | Name: %s\n", id, name)
+
 	}
+}
+
+type Customer struct {
+	id   int
+	name string
+}
+
+func ForBool() bool {
+	fmt.Println("Inisialisasi")
+	sliceCustomer := make([]Customer, 0, 10)
+	Siregar := Customer{1, "Siregar"}
+	Budi := Customer{2, "Budi"}
+
+	sliceCustomer = append(sliceCustomer, Siregar)
+	sliceCustomer = append(sliceCustomer, Budi)
+
+	slice := []struct{ Customer }{
+		{
+			Siregar,
+		},
+		{
+			Budi,
+		},
+	}
+
+	fmt.Println(sliceCustomer)
+	fmt.Println(len(sliceCustomer))
+	fmt.Println(slice)
+	return true
+}
+
+func TestForBool(t *testing.T) {
+	ForBool()
 }
