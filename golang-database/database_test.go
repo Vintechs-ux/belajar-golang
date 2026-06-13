@@ -58,3 +58,30 @@ func TestExecPostgres(t *testing.T) {
 
 	fmt.Println("Sukses insert customer baru")
 }
+
+func TestQueryPostgres(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+	script := "SELECT id, name FROM customer"
+
+	rows, err := db.QueryContext(ctx, script)
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	fmt.Println("=== ISI TABEL CUSTOMER ===")
+
+	for rows.Next() {
+		var id int
+		var name string
+
+		err := rows.Scan(&id, &name)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf("ID: %d | Name: %s\n", id, name)
+	}
+}
