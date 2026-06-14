@@ -97,10 +97,11 @@ func ForBool() bool {
 	sliceCustomer := make([]Customer, 0, 10)
 	Siregar := Customer{1, "Siregar"}
 	Budi := Customer{2, "Budi"}
+	Kosong := Customer{0, ""}
 
 	sliceCustomer = append(sliceCustomer, Siregar)
 	sliceCustomer = append(sliceCustomer, Budi)
-
+	sliceCustomer = append(sliceCustomer, Kosong)
 	slice := []struct{ Customer }{
 		{
 			Siregar,
@@ -108,11 +109,16 @@ func ForBool() bool {
 		{
 			Budi,
 		},
+		{
+			Kosong,
+		},
 	}
 
 	fmt.Println(sliceCustomer)
 	fmt.Println(len(sliceCustomer))
+	fmt.Println(cap(sliceCustomer))
 	fmt.Println(slice)
+
 	return true
 }
 
