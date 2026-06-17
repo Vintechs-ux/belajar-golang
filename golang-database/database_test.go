@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"testing"
+	"time"
 
 	_ "github.com/lib/pq"
 )
@@ -84,6 +85,45 @@ func TestQueryPostgres(t *testing.T) {
 		}
 		fmt.Printf("ID: %d | Name: %s\n", id, name)
 
+	}
+}
+
+func TestQuerySqlComplex(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+
+	sql := "SELECT id, name, email , balance, rating, birth_date, married, created_at FROM customer"
+	rows, err := db.QueryContext(ctx, sql)
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var id int
+		var name string
+		var email string
+		var balance int32
+		var rating float64
+		var birthDate, createdAt time.Time
+		var married bool
+
+		err := rows.Scan(&id, &name, &email, &balance, &rating, &birthDate, &married, &createdAt)
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Printf("ID       : %d\n", id)
+		fmt.Printf("Name     : %s\n", name)
+		fmt.Printf("Email    : %s\n", email)
+		fmt.Printf("Balance  : %d\n", balance)
+		fmt.Printf("Rating   : %.1f\n", rating)
+		fmt.Printf("BirthDate: %s\n", birthDate.Format("2006-01-02"))
+		fmt.Printf("Married  : %v\n", married)
+		fmt.Printf("CreatedAt: %s\n", createdAt.Format("2006-01-02 15:04:05"))
+		fmt.Println("----------------------------")
 	}
 }
 
