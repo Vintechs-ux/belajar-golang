@@ -155,11 +155,20 @@ func TestNullableSql(t *testing.T) {
 		}
 		fmt.Printf("ID       : %d\n", id)
 		fmt.Printf("Name     : %s\n", name)
-		fmt.Println("Email    : ", email)
+		if email.Valid {
+			fmt.Printf("Email    : %s\n", email.String)
+		}
 		fmt.Printf("Balance  : %f\n", balance)
 		fmt.Printf("Rating   : %.1f\n", rating)
-		fmt.Println("BirthDate: ", birthDate)
-		fmt.Printf("Married  : %v\n", married)
+
+		if birthDate.Valid {
+			fmt.Println("BirthDate: ", birthDate.Time)
+		}
+
+		if married.Valid {
+			fmt.Printf("Married  : %v\n", married.Bool)
+		}
+
 		fmt.Printf("CreatedAt: %s\n", createdAt.Format("2006-01-02 15:04:05"))
 		fmt.Println("----------------------------")
 
