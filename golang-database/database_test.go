@@ -105,7 +105,7 @@ func TestQuerySqlComplex(t *testing.T) {
 		var id int
 		var name string
 		var email string
-		var balance int32
+		var balance float64
 		var rating float64
 		var birthDate, createdAt time.Time
 		var married bool
@@ -118,7 +118,7 @@ func TestQuerySqlComplex(t *testing.T) {
 		fmt.Printf("ID       : %d\n", id)
 		fmt.Printf("Name     : %s\n", name)
 		fmt.Printf("Email    : %s\n", email)
-		fmt.Printf("Balance  : %d\n", balance)
+		fmt.Printf("Balance  : %f\n", balance)
 		fmt.Printf("Rating   : %.1f\n", rating)
 		fmt.Printf("BirthDate: %s\n", birthDate.Format("2006-01-02"))
 		fmt.Printf("Married  : %v\n", married)
