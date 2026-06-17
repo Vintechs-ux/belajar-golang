@@ -127,6 +127,45 @@ func TestQuerySqlComplex(t *testing.T) {
 	}
 }
 
+func TestNullableSql(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+	post := "SELECT id, name, email, balance, rating, birth_date, married, created_at FROM customer"
+	rows, err := db.QueryContext(ctx, post)
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var id int
+		var name string
+		var email sql.NullString
+		var balance float64
+		var rating float64
+		var birthDate sql.NullTime
+		var married sql.NullBool
+		var createdAt time.Time
+
+		err := rows.Scan(&id, &name, &email, &balance, &rating, &birthDate, &married, &createdAt)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf("ID       : %d\n", id)
+		fmt.Printf("Name     : %s\n", name)
+		fmt.Println("Email    : ", email)
+		fmt.Printf("Balance  : %f\n", balance)
+		fmt.Printf("Rating   : %.1f\n", rating)
+		fmt.Println("BirthDate: ", birthDate)
+		fmt.Printf("Married  : %v\n", married)
+		fmt.Printf("CreatedAt: %s\n", createdAt.Format("2006-01-02 15:04:05"))
+		fmt.Println("----------------------------")
+
+	}
+}
+
 type Customer struct {
 	id   int
 	name string
