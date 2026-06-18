@@ -175,6 +175,34 @@ func TestNullableSql(t *testing.T) {
 	}
 }
 
+func TestSqlInjection(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+
+	username := "admin"
+	password := "admin123"
+
+	ctx := context.Background()
+	script := "SELECT username FROM users WHERE username = '" + username + "' AND password = '" + password + "' LIMIT 1"
+	rows, err := db.QueryContext(ctx, script)
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	if rows.Next() {
+		var row string
+
+		err := rows.Scan(&row)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("Login sukses")
+	} else {
+		fmt.Println("Gagal login")
+	}
+}
+
 type Customer struct {
 	id   int
 	name string
