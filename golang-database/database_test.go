@@ -180,11 +180,11 @@ func TestSqlInjection(t *testing.T) {
 	defer db.Close()
 
 	username := "admin"
-	password := "admin123"
+	password := "salah' OR '1'='1"
 
 	ctx := context.Background()
-	script := "SELECT username FROM users WHERE username = '" + username + "' AND password = '" + password + "' LIMIT 1"
-	rows, err := db.QueryContext(ctx, script)
+	script := "SELECT username FROM users WHERE username = $1 AND password = $2 LIMIT 1"
+	rows, err := db.QueryContext(ctx, script, username, password)
 	if err != nil {
 		panic(err)
 	}
@@ -197,7 +197,7 @@ func TestSqlInjection(t *testing.T) {
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println("Login sukses")
+		fmt.Println("Login sukses", row)
 	} else {
 		fmt.Println("Gagal login")
 	}
