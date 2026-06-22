@@ -179,8 +179,8 @@ func TestSqlInjection(t *testing.T) {
 	db := GetConnection()
 	defer db.Close()
 
-	username := "admin"
-	password := "admin123"
+	username := "jemi"
+	password := "jemi123"
 
 	ctx := context.Background()
 	script := "SELECT username FROM users WHERE username = $1 AND password = $2 LIMIT 1"
@@ -207,8 +207,8 @@ func TestExecSqlParameter(t *testing.T) {
 	db := GetConnection()
 	defer db.Close()
 
-	username := "diki"
-	password := "diki123"
+	username := "jemi"
+	password := "jemi123"
 
 	ctx := context.Background()
 	script := "INSERT INTO users (username, password) VALUES($1, $2);"
