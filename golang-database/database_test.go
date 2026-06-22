@@ -180,7 +180,7 @@ func TestSqlInjection(t *testing.T) {
 	defer db.Close()
 
 	username := "admin"
-	password := "salah' OR '1'='1"
+	password := "admin123"
 
 	ctx := context.Background()
 	script := "SELECT username FROM users WHERE username = $1 AND password = $2 LIMIT 1"
@@ -201,6 +201,23 @@ func TestSqlInjection(t *testing.T) {
 	} else {
 		fmt.Println("Gagal login")
 	}
+}
+
+func TestExecSqlParameter(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+
+	username := "diki"
+	password := "diki123"
+
+	ctx := context.Background()
+	script := "INSERT INTO users (username, password) VALUES($1, $2);"
+
+	_, err := db.ExecContext(ctx, script, username, password)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Sukses insert new user")
 }
 
 type Customer struct {
