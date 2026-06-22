@@ -217,7 +217,7 @@ func TestExecSqlParameter(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Sukses insert new user")
+	fmt.Println("Sukses insert new users")
 }
 
 type Customer struct {
