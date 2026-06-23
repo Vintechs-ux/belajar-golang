@@ -262,3 +262,7 @@ func TestForBool(t *testing.T) {
 func TestHelloWorld(t *testing.T) {
 	fmt.Println("Hello World")
 }
+
+func TestHelloWorld2(t *testing.T) {
+	fmt.Println("Halo")
+}
