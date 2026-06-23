@@ -265,4 +265,5 @@ func TestHelloWorld(t *testing.T) {
 
 func TestHelloWorld2(t *testing.T) {
 	fmt.Println("Halo")
+	fmt.Println("OOi")
 }
