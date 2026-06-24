@@ -220,6 +220,25 @@ func TestExecSqlParameter(t *testing.T) {
 	fmt.Println("Sukses insert new users")
 }
 
+func TestAutoIncrement(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+	script := "INSERT INTO comments(email, comment) VALUES($1, $2) RETURNING id"
+
+	email := "jordi@gmail.com"
+	comment := "hai"
+
+	var id int
+	err := db.QueryRowContext(ctx, script, email, comment).Scan(&id)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("Comment baru dengan ID: ", id)
+}
+
 type Customer struct {
 	id   int
 	name string
@@ -257,13 +276,4 @@ func ForBool() bool {
 
 func TestForBool(t *testing.T) {
 	ForBool()
-}
-
-func TestHelloWorld(t *testing.T) {
-	fmt.Println("Hello World")
-}
-
-func TestHelloWorld2(t *testing.T) {
-	fmt.Println("Halo")
-	fmt.Println("OOi")
 }
