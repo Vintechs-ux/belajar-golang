@@ -239,6 +239,48 @@ func TestAutoIncrement(t *testing.T) {
 	fmt.Println("Comment baru dengan ID: ", id)
 }
 
+func TestAutoIncrementLooping(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+	script := "INSERT INTO comments(email, comment) VALUES($1, $2) RETURNING id"
+
+	comments := []struct {
+		email   string
+		comment string
+	}{
+		{
+			email:   "budi@gmail.com",
+			comment: "Hai saya budi",
+		},
+		{
+			email:   "laura@gmail.com",
+			comment: "Keren bro , saya laura",
+		},
+		{
+			email:   "ripo@gmail.com",
+			comment: "jangan gitu bang",
+		},
+		{
+			email:   "rizki@gmail.com",
+			comment: "rizki disini!!",
+		},
+		{
+			email:   "diki@gmail.com",
+			comment: "Mantap bro!!!",
+		},
+	}
+	for i := 0; i < len(comments); i++ {
+		var id int
+		err := db.QueryRowContext(ctx, script, comments[i].email, comments[i].comment).Scan(&id)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf("Insert sukses, ID: %d, Email: %s\n", id, comments[i].email)
+	}
+}
+
 type Customer struct {
 	id   int
 	name string
