@@ -281,6 +281,33 @@ func TestAutoIncrementLooping(t *testing.T) {
 	}
 }
 
+func TestPreparedStatement(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+	script := "INSERT INTO comments(email, comment) VALUES($1, $2) RETURNING id"
+	statement, err := db.PrepareContext(ctx, script)
+	if err != nil {
+		panic(err)
+	}
+
+	defer statement.Close()
+
+	for i := 0; i < 10; i++ {
+		email := fmt.Sprintf("user@%d@example.com", i)
+		comment := fmt.Sprintf("Komentar ke-%d", i)
+
+		var id int
+		err := statement.QueryRowContext(ctx, email, comment).Scan(&id)
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println("Comment ID:", id)
+	}
+}
+
 type Customer struct {
 	id   int
 	name string
