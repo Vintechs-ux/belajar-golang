@@ -308,6 +308,28 @@ func TestPreparedStatement(t *testing.T) {
 	}
 }
 
+func TestWithoutPreparedStatement(t *testing.T) {
+	db := GetConnection()
+	defer db.Close()
+
+	ctx := context.Background()
+	script := "INSERT INTO comments(email, comment) VALUES($1, $2) RETURNING id"
+
+	for i := 0; i < 100; i++ {
+		email := fmt.Sprintf("user%d@example.com", i)
+		comment := fmt.Sprintf("Komentar ke-%d", i)
+
+		var id int
+		err := db.QueryRowContext(ctx, script, email, comment).Scan(&id)
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Println("Comment ID:", id)
+
+	}
+}
+
 type Customer struct {
 	id   int
 	name string
