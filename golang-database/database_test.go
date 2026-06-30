@@ -399,3 +399,7 @@ func ForBool() bool {
 func TestForBool(t *testing.T) {
 	ForBool()
 }
+
+func TestHelloWorld(t *testing.T) {
+	fmt.Println("hai")
+}
